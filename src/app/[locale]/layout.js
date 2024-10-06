@@ -8,11 +8,12 @@ export default async function LocaleLayout({ children, params: { locale } }) {
 
   return (
     <html lang={locale}>
-      <body>
+      <body style={locale == "ar" ? { paddingLeft: "100px" } : { padding: 0 }}>
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
       </body>
     </html>
   );
+  s;
 }
