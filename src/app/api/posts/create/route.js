@@ -1,41 +1,61 @@
-import { supabase } from "../../../lib/supabase"; // Update the import path based on your project structure
 
-export async function POST(request) {
+import { NextResponse } from "next/server";
+import { supabase } from "../../../lib/supabase"; 
+
+export async function POST(req) {
   try {
-    // Parse the incoming request body
-    const { title, content, author } = await request.json();
+    // Parse the incoming form data using the FormData API
+    const formData = await req.formData();
+    
+    // Extract fields and file from form data
+    const title = formData.get("title") ;
+    const content = formData.get("content") ;
+    // const author_id = formData.get("author_id") ;
+    const desc = formData.get("desc") ;
+    const file = formData.get("file") ;
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    if (!title || !content || !author) {
-      return new Response(
-        JSON.stringify({ error: "All fields are required" }),
-        { status: 400 }
-      );
+    if (!file) {
+      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // Insert the new post into the Supabase database
+    // Convert file to a buffer
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Upload the file to Supabase storage
+    const { data: storageData, error: storageError } = await supabase.storage
+      .from("post_imgs")
+      .upload(`images/${file.name}`, buffer, {
+        contentType: file.type,
+      });
+
+    if (storageError) throw storageError;
+
+    // Get the public URL for the image
+    const { data: publicUrlData, error: publicUrlError } = await supabase.storage
+      .from("post_imgs")
+      .getPublicUrl(`images/${file.name}`);
+
+    if (publicUrlError) throw publicUrlError;
+
+    // Insert the post into the database with the image URL
     const { data, error } = await supabase.from("posts").insert([
       {
         title,
         content,
-        author,
-        slug: title.toLowerCase().replace(/ /g, "-"),
+        author_id: session.user.id, 
+        desc,
+        image_url: publicUrlData.publicUrl,
       },
     ]);
 
-    // Handle any errors from Supabase
-    if (error) {
-      console.error("Error inserting post:", error);
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-      });
-    }
+    if (error) throw error;
 
-    // Return a success response
-    return new Response(JSON.stringify(data), { status: 201 });
-  } catch (err) {
-    console.error("Error in POST request:", err);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
-    });
+    return NextResponse.json({ message: "Post created successfully", data });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
