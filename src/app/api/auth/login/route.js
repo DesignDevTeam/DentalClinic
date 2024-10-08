@@ -13,7 +13,7 @@ export async function POST(request) {
   const token = data.session?.access_token;
   console.log(token);
   // Use httpOnly cookie to store token securely
-  const response = NextResponse.json({ message: 'Login successful' });
+  const response = NextResponse.json({ message: 'Login successful' , data });
   response.cookies.set('access_token', token, { httpOnly: true, secure: true });
   
   return response;
