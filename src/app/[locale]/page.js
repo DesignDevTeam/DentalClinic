@@ -6,12 +6,8 @@ export default function HomePage({ params: { locale } }) {
   return (
     <>
       <div>
-        <h1>
-          {" "}
-          {locale == "ar"
-            ? "الموقع الالكتروني في الخدمة "
-            : "website for you service"}{" "}
-        </h1>
+        <h2>{t("title")}</h2>
+
         <LangSwitcher />
       </div>
     </>

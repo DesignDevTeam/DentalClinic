@@ -7,13 +7,12 @@ export default async function LocaleLayout({ children, params: { locale } }) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body style={locale == "ar" ? { paddingLeft: "100px" } : { padding: 0 }}>
+    <html dir={locale === "ar" ? `RTL` : `LTR`} lang={locale}>
+      <body>
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
       </body>
     </html>
   );
-  s;
 }
