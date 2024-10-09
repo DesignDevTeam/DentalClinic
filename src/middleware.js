@@ -4,7 +4,7 @@ import { supabase } from "./app/lib/supabase";
 
 export async function middleware(req) {
   const token = req.cookies.get("access_token");
-console.log('in midd ', token);
+// `console.log('in midd ', token);`
   const { data } = await supabase.auth.getUser(token?.value || "");
 
   if (!data.user) {
