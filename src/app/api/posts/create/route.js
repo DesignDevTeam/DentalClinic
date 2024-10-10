@@ -12,37 +12,29 @@ export async function POST(req) {
     const content = formData.get("content");
     const desc = formData.get("desc");
     const file = formData.get("file");
-    const author_id = formData.get("author_id");
+    const email = formData.get("email");
 
     // Check if all required fields are present
-    if (!title || !content || !desc || !file) {
+    if (!title || !content || !desc || !file || !email) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // problem when usging postman  
+    // Check if the user with the given email exists
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", email)
+      .single();
 
-    // const token = req.cookies.get("access_token");
-    // console.log("Token:", token);
-    // if (!token) {
-    //   return NextResponse.json(
-    //     { error: "Authentication error: No user session" },
-    //     { status: 401 }
-    //   );
-    // }
-
-    // const respp = await supabase.auth.getUser(
-    //   token?.value || ""
-    // );
-    // console.log("Session data:", respp);
-    // if (authError || !session) {
-    //   return NextResponse.json(
-    //     { error: "Authentication error: Invalid user session" },
-    //     { status: 401 }
-    //   );}
-    
+    if (userError || !userData) {
+      return NextResponse.json(
+        { error: "User with the provided email not found" },
+        { status: 404 }
+      );
+    }
 
     // Generate a unique file name
     const uniqueId = uuidv4();
@@ -51,6 +43,18 @@ export async function POST(req) {
     // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
+
+    // Check if the image already exists in storage
+    const { data: existingImg } = await supabase.storage
+      .from("post_imgs")
+      .list("images", { search: newFileName });
+
+    if (existingImg.length > 0) {
+      return NextResponse.json(
+        { error: "Image already exists in storage" },
+        { status: 409 }
+      );
+    }
 
     // Upload the file to Supabase storage
     const { data: storageData, error: storageError } = await supabase.storage
@@ -86,7 +90,7 @@ export async function POST(req) {
           title,
           content,
           desc,
-          author_id,
+          author_id: userData.id, // Use the found user's ID
           image_url: publicUrlData.publicUrl,
         },
       ]);
