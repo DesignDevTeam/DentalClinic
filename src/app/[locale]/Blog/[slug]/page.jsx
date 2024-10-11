@@ -1,5 +1,4 @@
 // Fetching a signle post : example : ('/Blog/post1' )
-"use-client";
 import { ReactMarkdown } from "react-markdown";
 
 import {
