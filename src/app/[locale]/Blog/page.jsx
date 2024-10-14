@@ -7,16 +7,9 @@ const BlogPage = async () => {
   const posts = await getPublishedBlogPosts(); // Fetch data
 
   return (
-    <div>
+    <div style={{ width: "100vw", display: "flex", justifyContent: "center" }}>
       <h1>Blog Posts</h1>
-      <div
-        style={{
-          width: "100vw",
-          display: "flex",
-          gap: "10px",
-          alignContent: "center",
-        }}
-      >
+      <div style={{ width: "40%" }}>
         {posts.map((pt) => (
           <div>
             <BlogPost key={pt.id} post={pt} />

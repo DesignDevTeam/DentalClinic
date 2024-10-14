@@ -77,3 +77,31 @@ const pageToPostsTransformer = (page) => {
     author: page.properties.Author.rich_text[0].plain_text,
   };
 };
+// // services/NotionService.js
+// import { Client } from "@notionhq/client";
+
+// const notion = new Client({ auth: process.env.NOTION_API_KEY });
+
+// export async function getPublishedBlogPosts(sinceLastFetch) {
+//   const response = await notion.databases.query({
+//     database_id: process.env.NOTION_DATABASE_ID,
+//     filter: {
+//       property: "Published",
+//       checkbox: {
+//         equals: true,
+//       },
+//       timestamp: "last_edited_time",
+//       last_edited_time: {
+//         after: "October 12, 2024 1:10 AM", // Fetch only posts edited after the last fetch time
+//       },
+//     },
+//   });
+
+//   return response.results.map((page) => ({
+//     id: page.id,
+//     title: page.properties.Name.title[0]?.text.content,
+//     slug: page.properties.Slug.rich_text[0]?.text.content,
+//     last_edited_time: page.last_edited_time,
+//     content: page.properties.Content.rich_text[0]?.text.content,
+//   }));
+// }
