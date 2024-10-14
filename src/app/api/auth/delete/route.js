@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../../lib/supabase";
+import { supabaseAdmin } from "../../../lib/admin_supabase";
 
 export async function DELETE(req) {
   try {
     const token = req.headers.get("Authorization")?.replace("Bearer ", "");
 
     // Get user based on token
-    const { data: session, error: sessionError } = await supabase.auth.getUser(
+    const { data: session, error: sessionError } = await supabaseAdmin.auth.getUser(
       token
     );
     if (sessionError || !session.user) {
@@ -19,16 +20,15 @@ export async function DELETE(req) {
     const userId = session.user.id;
 
     // Delete the user from the custom 'users' table first
-    // const { error: userDeleteError } = await supabase
-    //   .from("users")
-    //   .delete()
-    //   .eq("id", userId);
-    // if (userDeleteError) throw userDeleteError;
+    const { error: userDeleteError } = await supabase
+      .from("users")
+      .delete()
+      .eq("id", userId);
+    if (userDeleteError) throw userDeleteError;
 
     // Then delete the user from the Supabase auth table
-    const { error: authDeleteError } = await supabase.auth.admin.deleteUser(
-      userId
-    );
+    const { error: authDeleteError } =
+      await supabaseAdmin.auth.admin.deleteUser(userId);
     if (authDeleteError) throw authDeleteError;
 
     return NextResponse.json(

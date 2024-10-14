@@ -1,5 +1,6 @@
 // app/api/auth/signup/route.ts
 import { NextResponse } from "next/server";
+// import { supabaseAdmin } from "../../../lib/admin_supabase";
 import { supabase } from "../../../lib/supabase";
 
 export async function POST(request ) {
