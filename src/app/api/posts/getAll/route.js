@@ -1,11 +1,9 @@
 import { supabase } from "../../../lib/supabase";
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from("posts")
-    .select("*")
-    
-    console.log(data);
+  const { data, error } = await supabase.from("posts").select("*");
+
+  console.log(data);
 
   if (error) {
     console.error("Error fetching posts:", error);
@@ -18,7 +16,7 @@ export async function GET() {
   }
 
   return new Response(JSON.stringify(data), {
-    status: 200,  
+    status: 200,
     headers: {
       "Content-Type": "application/json",
     },
