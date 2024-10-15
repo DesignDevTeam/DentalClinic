@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 
 const page = () => {
   const Text = useTranslations("Index");
+
   return (
     <div>
       <h1>About</h1>
