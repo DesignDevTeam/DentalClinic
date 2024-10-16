@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 
-const page = () => {
+const About = () => {
   const Text = useTranslations("Index");
 
   return (
@@ -11,4 +11,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default About;
