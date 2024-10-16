@@ -4,7 +4,7 @@ import { addDays, format } from "date-fns";
 
 // Mock available time slots
 
-const page = () => {
+const Appointment = () => {
   const timeSlots = [
     "09:00 AM",
     "10:00 AM",
@@ -128,4 +128,4 @@ const page = () => {
     </div>
   );
 };
-export default page;
+export default Appointment;

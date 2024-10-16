@@ -1,8 +1,8 @@
 import { redirect } from "next/dist/server/api-utils";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   redirect("/en");
 };
 
-export default page;
+export default Page;
