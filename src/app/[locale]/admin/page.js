@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { useRouter } from "next/navigation"; // Correct import for App Router
 
-const page = () => {
+const Admin = () => {
   const router = useRouter();
   const handelLogout = async (e) => {
     console.log("here");
@@ -33,4 +33,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Admin;

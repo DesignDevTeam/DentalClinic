@@ -34,6 +34,6 @@ export const config = {
   matcher: [
     "/", // Handle homepage
     "/(ar|en|fr)/:path*", // Internationalized routes
-    "/(ar|en|fr):path*", // Admin routes for authentication
+    "/(ar|en|fr)/:path*", // Admin routes for authentication
   ],
 };
