@@ -7,7 +7,7 @@ import { routing } from "./i18n/routing";
 const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(req) {
-  // Check if it's an admin route, and handle authentication first
+  // this Checks if it's an admin route , and handle authentication first
   if (req.nextUrl.pathname.includes("/admin")) {
     console.log("in admin");
 
