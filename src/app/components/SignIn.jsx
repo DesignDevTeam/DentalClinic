@@ -23,7 +23,7 @@ const SignIn = ({ lang }) => {
 
         console.log("Login successful:", data);
         if (data.user) {
-          router.push(`/${lang}/admin)`); // Admin Dashboard
+          router.push(`/${lang}/admin`); // Admin Dashboard
         } else {
           console.error("Access Denied");
         }
