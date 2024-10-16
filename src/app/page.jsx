@@ -1,5 +1,4 @@
-import { redirect } from "next/dist/server/api-utils";
-import React from "react";
+import { redirect } from "next/navigation";
 
 const Page = () => {
   redirect("/en");

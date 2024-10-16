@@ -32,8 +32,8 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/", // Handle homepage
+    "/(en | fr | ar)", // Handle homepage
     "/(ar|en|fr)/:path*", // Internationalized routes
-    "/(ar|en|fr)/:path*", // Admin routes for authentication
+    "/admin/:path*", // Admin routes for authentication
   ],
 };
