@@ -10,7 +10,7 @@ const BlogPage = () => {
       <p>Blog Markdown</p>
       {posts?.map((blog) => {
         return (
-          <div>
+          <div key={blog.id}>
             <h1>{blog.author}</h1>
             <img src={blog.cover} alt="" />
             <h2>{blog.Status}</h2>
