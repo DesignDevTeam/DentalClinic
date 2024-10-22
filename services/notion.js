@@ -25,7 +25,7 @@ export const getPublishedBlogPosts = async () => {
     });
 
     const posts = response.results.map((res) => pageToPostsTransformer(res));
-    console.log(posts[0]);
+    return posts;
   } catch (error) {
     console.error("Error fetching published blog posts:", error);
     throw error; // Re-throw the error if needed
@@ -78,7 +78,7 @@ const pageToPostsTransformer = (page) => {
   return {
     id: page.id,
     cover: cover,
-    author: page.properties.Author.rich_text.pain_text,
+    author: page.properties.Author.rich_text[0].plain_text,
     Status: page.properties.Status.status.name,
   };
 };
